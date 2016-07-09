@@ -1,0 +1,28 @@
+{
+  "name": "project-intro",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "author": "Jessie Cris Vicerra",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^1.13.1",
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-2": "^6.3.13",
+    "babel-cli": "^6.0.0",
+    "json-loader": "^0.5.4"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-graphql": "^0.5.3",
+    "graphql": "^0.6.1"
+  },
+  "scripts": {
+  	"start": "webpack --progress && node build/bundle.js",
+    "production": "webpack -p --progress && node build/bundle.js"
+  }
+}

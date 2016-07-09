@@ -12,8 +12,9 @@ fs.readdirSync('node_modules')
   });
 
 var config = {
+  context: path.resolve(__dirname, './app'),
   target : 'node',
-  entry: './main.js',
+  entry: './server.js',
   output: { path: __dirname, filename: 'build/bundle.js' },
   module: {
     loaders: [

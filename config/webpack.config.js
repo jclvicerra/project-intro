@@ -1,18 +1,21 @@
 import path from 'path';
 import extend from 'extend';
+import nodeExternals from 'webpack-node-externals';
 
 //Our base config for client and server
 const baseConfig = {
     context: path.resolve(__dirname, '..', 'app'),
     output: {
-        path: '/build',
-        publicPath: '/build'
+        path: path.resolve(__dirname, '..', 'build'),
+        publicPath: '/build/'
     },
      module: {   
         loaders: [{
             test: /.js?$/,
             loader: 'babel',
-            exclude: /node_modules/,
+            include: [
+                path.resolve(__dirname, '../app'),
+            ],
             query: {
                 cacheDirectory: true,
                 presets: ['es2015', 'stage-2']
@@ -23,19 +26,14 @@ const baseConfig = {
         }] 
     },
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js']
-    },
+        root: path.resolve(__dirname, '..', 'app'),
+        modulesDirectories: ['node_modules'],
+        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.json']
+    }
 };
 
 const clientConfig = extend(true, {}, baseConfig, {
-    entry: [
-        //For hot style updates
-        'webpack/hot/dev-server',
-        // The script refreshing the browser on none hot updates
-        'webpack-dev-server/client?http://localhost:8080',
-        //Our application
-        './client.js'
-    ],
+    entry:  './client.js',
     output: {
         filename: 'client.js'
     },
@@ -48,7 +46,8 @@ const serverConfig = extend(true, {}, baseConfig, {
         filename: 'server.js',
         libraryTarget: 'commonjs2',
     },
-    target: 'node'
+    target: 'node',
+    externals: [nodeExternals()],
 })
 
 export default [clientConfig, serverConfig];

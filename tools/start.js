@@ -8,26 +8,37 @@ async function start() {
     await new Promise(resolve => {
 
         //we will run the webpack dev server in our entry client.js
-        const bundler = Webpack(webpackConfig[0]);
-
+        const bundler = Webpack(webpackConfig);
+        const serverBundler = Webpack(webpackConfig[1]);
+        
         const devServer = new WebpackDevServer(bundler, {
             publicPath: webpackConfig[0].output.publicPath,
-            hot: true,
+            //hot: true,
             inline: true,
             stats: {
                 colors: true
-            }
+            },
         });
 
-        devServer.listen(8080, 'localhost', function() {
-            console.log("Webpack Dev Server is Listening in port 8080");
+        devServer.listen(8080, 'localhost', ()=> {
+             console.log("Webpack Dev Server is Listening in port 8080");
         });
 
-        bundler.plugin('done', () => handleServerBundleComplete());
+        bundler.plugin('done', () => {
+            serverBundler.run((err, status)=>{
+                console.log("Bundling Server files");
+
+                if (err) {
+                    console.log(err);
+                }
+             });
+        });
+        serverBundler.plugin('done', () => handleServerBundleComplete());
     })
 }
 
 function handleServerBundleComplete() {
+    console.log("Done Bundling Server Files");
     console.log("Starting Server");
 
     if (nodeServer) {

@@ -6,7 +6,9 @@ function bundle() {
     return new Promise((resolve, reject) => {
         Webpack(webpackConfig).run((err, status) => {
             console.log("Bundling files");
+
             if (err) {
+            	console.log(err);
                 return reject(err);
             }
             resolve();
